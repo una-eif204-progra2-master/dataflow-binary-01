@@ -13,7 +13,7 @@
 void FileManager::savePhysicalProduct(const PhysicalProduct &physicalProduct, const string &fileName) {
 
     // Create and open a binary file
-    ofstream myFile(fileName, ios_base::binary);
+    ofstream myFile(fileName, ios::out | ios_base::binary);
 
     // Write to the file
     myFile.write((char *)&physicalProduct, sizeof(physicalProduct));
@@ -33,7 +33,7 @@ PhysicalProduct FileManager::readDataPhysicalProduct(const string &filename) {
     PhysicalProduct physicalProduct;
 
     // Read from the text file
-    ifstream myReadFile(filename, ios::binary);
+    ifstream myReadFile(filename, ios::in | ios::binary);
 
     if (!myReadFile.is_open()) {
         throw invalid_argument("Could not open the file [" + filename + "]");
@@ -57,7 +57,7 @@ PhysicalProduct FileManager::readDataPhysicalProduct(const string &filename) {
 void FileManager::savePhysicalProductList(const vector<PhysicalProduct> &physicalProductList, const string &fileName) {
 
     // Create and open a binary file
-    ofstream myFile(fileName, ios_base::binary);
+    ofstream myFile(fileName, ios::out | ios_base::binary);
 
     // Write to the file
     for (auto &physicalProduct : physicalProductList) {
@@ -80,13 +80,14 @@ vector<PhysicalProduct> FileManager::readDataPhysicalProductList(const string &f
     PhysicalProduct physicalProduct;
 
     // Read from the text file
-    ifstream myReadFile(filename, ios::binary);
+    ifstream myReadFile(filename, ios::in | ios::binary);
 
     if (!myReadFile.is_open()) {
         throw invalid_argument("Could not open the file [" + filename + "]");
     }
 
     // Read the binary file
+    // myReadFile.seekg (sizeof(physicalProduct),ios::beg);  // Reading the last value
     myReadFile.seekg (0);
     while(myReadFile.read((char*)&physicalProduct, sizeof(physicalProduct))){
         physicalProductList.push_back(physicalProduct);

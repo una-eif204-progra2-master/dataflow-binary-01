@@ -21,6 +21,11 @@ int main() {
         physicalProduct1.setWeight(rand() % 500);
         physicalProduct1.setPrice(rand() % 59 + 100);
 
+        PhysicalProduct physicalProduct2;
+        physicalProduct2.setName("PS5 Game: Fifa");
+        physicalProduct2.setWeight(rand() % 500);
+        physicalProduct2.setPrice(rand() % 59 + 100);
+
         // Manager SRP
         FileManager fileManager;
 
@@ -33,11 +38,6 @@ int main() {
 
         cout << "[FILE BINARY READ]" << endl;
         cout << physicalProductData << endl;
-
-        PhysicalProduct physicalProduct2;
-        physicalProduct2.setName("PS5 Game: Fifa");
-        physicalProduct2.setWeight(rand() % 500);
-        physicalProduct2.setPrice(rand() % 59 + 100);
 
         vector<PhysicalProduct> physicalProductList;
         physicalProductList.push_back(physicalProduct1);
