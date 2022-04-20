@@ -42,8 +42,14 @@ public:
      */
     static vector<PhysicalProduct> readDataPhysicalProductList(const string& filename);
 
+    /**
+    * Method to write in files with at least one type of std::string
+    **/
     static ostream& write(ostream& out, const PhysicalProduct& physicalProduct);
 
+    /**
+    * Method to read from files with at least one type of std::string
+    **/
     static istream& read(istream& in, PhysicalProduct& physicalProduct);
 };
 

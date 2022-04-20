@@ -12,7 +12,7 @@
 void FileManager::savePhysicalProduct(const PhysicalProduct &physicalProduct, const string &fileName) {
 
     // Create and open a binary file
-    ofstream myFile(fileName, std::ios::out | std::ios::binary | std::ios::app);
+    ofstream myFile(fileName, ios::binary);
 
     // Write to the file
     write(myFile, physicalProduct);
@@ -32,7 +32,7 @@ PhysicalProduct FileManager::readDataPhysicalProduct(const string &filename) {
     PhysicalProduct physicalProduct;
 
     // Read from the text file
-    ifstream myReadFile(filename, ios::in | ios::binary);
+    ifstream myReadFile(filename, ios::binary);
 
     if (!myReadFile.is_open()) {
         throw invalid_argument("Could not open the file [" + filename + "]");
@@ -56,11 +56,11 @@ PhysicalProduct FileManager::readDataPhysicalProduct(const string &filename) {
 void FileManager::savePhysicalProductList(const vector<PhysicalProduct> &physicalProductList, const string &fileName) {
 
     // Create and open a binary file
-    ofstream myFile(fileName, ios::out | ios_base::binary);
+    ofstream myFile(fileName, ios_base::binary);
 
     // Write to the file
     for (auto &physicalProduct : physicalProductList) {
-        myFile.write((char *)&physicalProduct, sizeof(physicalProduct));
+        write(myFile, physicalProduct);
     }
 
     // Close the file
@@ -79,7 +79,7 @@ vector<PhysicalProduct> FileManager::readDataPhysicalProductList(const string &f
     PhysicalProduct physicalProduct;
 
     // Read from the text file
-    ifstream myReadFile(filename, ios::in | ios::binary);
+    ifstream myReadFile(filename, ios::binary);
 
     if (!myReadFile.is_open()) {
         throw invalid_argument("Could not open the file [" + filename + "]");
@@ -88,8 +88,11 @@ vector<PhysicalProduct> FileManager::readDataPhysicalProductList(const string &f
     // Read the binary file
     // myReadFile.seekg (sizeof(physicalProduct),ios::beg);  // Reading the last value
     myReadFile.seekg (0);
-    while(myReadFile.read((char*)&physicalProduct, sizeof(physicalProduct))){
-        physicalProductList.push_back(physicalProduct);
+    while(myReadFile.good()){
+        read(myReadFile, physicalProduct); 
+        if (physicalProduct.getName() != "") {
+            physicalProductList.push_back(physicalProduct);
+        }
     }
 
     // Close the file
@@ -98,6 +101,10 @@ vector<PhysicalProduct> FileManager::readDataPhysicalProductList(const string &f
     return physicalProductList;
 }
 
+
+/**
+* Method to write in files with at least one type of std::string
+**/
 ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct) {
     double price = physicalProduct.getPrice();
     double weight = physicalProduct.getWeight();
@@ -111,6 +118,9 @@ ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct
     return out;
 }
 
+/**
+* Method to read from files with at least one type of std::string
+**/
 istream &FileManager::read(istream &in, PhysicalProduct &physicalProduct) {
     size_t len = 0;
     in.read((char*)&len, sizeof(len));
@@ -130,5 +140,3 @@ istream &FileManager::read(istream &in, PhysicalProduct &physicalProduct) {
 
     return in;
 }
-
-
