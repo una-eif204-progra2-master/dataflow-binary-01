@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "PhysicalProduct.h"
 
 using namespace std;

@@ -3,7 +3,6 @@
 //
 
 #include "FileManager.h"
-#include "vector"
 
 /**
  * This function savePhysicalProduct data into Binary File
@@ -13,10 +12,10 @@
 void FileManager::savePhysicalProduct(const PhysicalProduct &physicalProduct, const string &fileName) {
 
     // Create and open a binary file
-    ofstream myFile(fileName, ios::out | ios_base::binary);
+    ofstream myFile(fileName, std::ios::out | std::ios::binary | std::ios::app);
 
     // Write to the file
-    myFile.write((char *)&physicalProduct, sizeof(physicalProduct));
+    myFile.write((char *)&physicalProduct, sizeof(PhysicalProduct));
 
     // Close the file
     myFile.close();
@@ -41,7 +40,7 @@ PhysicalProduct FileManager::readDataPhysicalProduct(const string &filename) {
 
     // Read the binary file
     myReadFile.seekg (0);
-    myReadFile.read((char*)&physicalProduct, sizeof(physicalProduct));
+    myReadFile.read((char*)&physicalProduct, sizeof(PhysicalProduct));
 
     // Close the file
     myReadFile.close();
