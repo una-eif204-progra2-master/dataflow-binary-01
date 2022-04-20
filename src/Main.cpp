@@ -58,5 +58,5 @@ int main() {
     } catch (exception& ex) {
         cerr << ex.what() << '\n' << std::endl;
     }
-
+    return 0;
 }
