@@ -102,7 +102,8 @@ ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct
     double price = physicalProduct.getPrice();
     double weight = physicalProduct.getWeight();
     size_t len = physicalProduct.getName().size();
-    out.write(reinterpret_cast<char const*>(&len), sizeof(len));
+
+    out.write((char*)&len, sizeof(len));
     out.write(physicalProduct.getName().c_str(), len);
     out.write((char*)(&price), sizeof(physicalProduct.getPrice()));
     out.write((char*)(&weight), sizeof(physicalProduct.getWeight()));
@@ -111,18 +112,19 @@ ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct
 }
 
 istream &FileManager::read(istream &in, PhysicalProduct &physicalProduct) {
-    double price, weight;
-    size_t len;
-    in.read(reinterpret_cast<char*>(&len), sizeof(len));
+    size_t len = 0;
+    in.read((char*)&len, sizeof(len));
 
-    char* name = new char[len];
+    double price = 0.0, weight = 0.0;
+
+    char* name = new char[len + 1];
     in.read(name, len);
     name[len] = '\0';
     physicalProduct.setName(name);
     delete[] name;
 
-    in.read(reinterpret_cast<char*>(&price), sizeof(physicalProduct.getPrice()));
-    in.read(reinterpret_cast<char*>(&weight), sizeof(physicalProduct.getWeight()));
+    in.read((char*)&price, sizeof(double));
+    in.read((char*)&weight, sizeof(double));
     physicalProduct.setPrice(price);
     physicalProduct.setWeight(weight);
 
