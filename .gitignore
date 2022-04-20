@@ -36,3 +36,5 @@
 /cmake-build-debug
 /sample
 *.DS_Store
+/.vs
+/out/build/x64-Debug
