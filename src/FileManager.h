@@ -41,6 +41,10 @@ public:
      * @return the object list PhysicalProduct
      */
     static vector<PhysicalProduct> readDataPhysicalProductList(const string& filename);
+
+    static ostream& write(ostream& out, const PhysicalProduct& physicalProduct);
+
+    static istream& read(istream& in, PhysicalProduct& physicalProduct);
 };
 
 

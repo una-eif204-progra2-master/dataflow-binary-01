@@ -15,7 +15,7 @@ void FileManager::savePhysicalProduct(const PhysicalProduct &physicalProduct, co
     ofstream myFile(fileName, std::ios::out | std::ios::binary | std::ios::app);
 
     // Write to the file
-    myFile.write((char *)&physicalProduct, sizeof(PhysicalProduct));
+    write(myFile, physicalProduct);
 
     // Close the file
     myFile.close();
@@ -40,7 +40,7 @@ PhysicalProduct FileManager::readDataPhysicalProduct(const string &filename) {
 
     // Read the binary file
     myReadFile.seekg (0);
-    myReadFile.read((char*)&physicalProduct, sizeof(PhysicalProduct));
+    read(myReadFile, physicalProduct);
 
     // Close the file
     myReadFile.close();
@@ -96,6 +96,37 @@ vector<PhysicalProduct> FileManager::readDataPhysicalProductList(const string &f
     myReadFile.close();
 
     return physicalProductList;
+}
+
+ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct) {
+    double price = physicalProduct.getPrice();
+    double weight = physicalProduct.getWeight();
+    size_t len = physicalProduct.getName().size();
+    out.write(reinterpret_cast<char const*>(&len), sizeof(len));
+    out.write(physicalProduct.getName().c_str(), len);
+    out.write((char*)(&price), sizeof(physicalProduct.getPrice()));
+    out.write((char*)(&weight), sizeof(physicalProduct.getWeight()));
+
+    return out;
+}
+
+istream &FileManager::read(istream &in, PhysicalProduct &physicalProduct) {
+    double price, weight;
+    size_t len;
+    in.read(reinterpret_cast<char*>(&len), sizeof(len));
+
+    char* name = new char[len];
+    in.read(name, len);
+    name[len] = '\0';
+    physicalProduct.setName(name);
+    delete[] name;
+
+    in.read(reinterpret_cast<char*>(&price), sizeof(physicalProduct.getPrice()));
+    in.read(reinterpret_cast<char*>(&weight), sizeof(physicalProduct.getWeight()));
+    physicalProduct.setPrice(price);
+    physicalProduct.setWeight(weight);
+
+    return in;
 }
 
 
