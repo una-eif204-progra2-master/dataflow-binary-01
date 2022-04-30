@@ -11,6 +11,7 @@ using namespace std;
 class Product {
 private:
     string name;
+    string type;
     double price;
 
     virtual double applyDiscount();
@@ -28,6 +29,10 @@ public:
     double getPrice() const;
 
     void setPrice(double price);
+
+    const string &getType() const;
+
+    void setType(const string &type);
 
     friend ostream &operator<<(ostream &os, const Product &product);
 

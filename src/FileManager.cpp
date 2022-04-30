@@ -108,10 +108,15 @@ vector<PhysicalProduct> FileManager::readDataPhysicalProductList(const string &f
 ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct) {
     double price = physicalProduct.getPrice();
     double weight = physicalProduct.getWeight();
-    size_t len = physicalProduct.getName().size();
 
+    size_t len = physicalProduct.getName().size();
     out.write((char*)&len, sizeof(len));
     out.write(physicalProduct.getName().c_str(), len);
+
+    len = physicalProduct.getType().size();
+    out.write((char*)&len, sizeof(len));
+    out.write(physicalProduct.getType().c_str(), len);
+
     out.write((char*)(&price), sizeof(physicalProduct.getPrice()));
     out.write((char*)(&weight), sizeof(physicalProduct.getWeight()));
 
@@ -122,16 +127,21 @@ ostream &FileManager::write(ostream &out, const PhysicalProduct &physicalProduct
 * Method to read from files with at least one type of std::string
 **/
 istream &FileManager::read(istream &in, PhysicalProduct &physicalProduct) {
-    size_t len = 0;
-    in.read((char*)&len, sizeof(len));
-
     double price = 0.0, weight = 0.0;
 
-    char* name = new char[len + 1];
-    in.read(name, len);
-    name[len] = '\0';
+    size_t len = 0;
+    string name;
+    in.read((char*)&len, sizeof(len));
+    name.resize(len);
+    in.read(&name[0], len);
     physicalProduct.setName(name);
-    delete[] name;
+
+    len = 0;
+    string type;
+    in.read((char*)&len, sizeof(len));
+    type.resize(len);
+    in.read(&type[0], len);
+    physicalProduct.setType(type);
 
     in.read((char*)&price, sizeof(double));
     in.read((char*)&weight, sizeof(double));

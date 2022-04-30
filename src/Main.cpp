@@ -18,11 +18,13 @@ int main() {
 
         PhysicalProduct physicalProduct1;
         physicalProduct1.setName("PS5 Game: Call of Duty");
+        physicalProduct1.setType("PS5");
         physicalProduct1.setWeight(500);
         physicalProduct1.setPrice(59);
 
         PhysicalProduct physicalProduct2;
         physicalProduct2.setName("PS5 Game: Fifa");
+        physicalProduct1.setType("PS5");
         physicalProduct2.setWeight(rand() % 500);
         physicalProduct2.setPrice(rand() % 59 + 100);
 

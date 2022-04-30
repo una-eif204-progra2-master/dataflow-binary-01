@@ -35,8 +35,16 @@ double Product::applyDiscount() {
     return getPrice();
 }
 
+const string &Product::getType() const {
+    return type;
+}
+
+void Product::setType(const string &type) {
+    Product::type = type;
+}
+
 ostream &operator<<(ostream &os, const Product &product) {
-    os << "name: " << product.name << " price: " << product.price;
+    os << "name: " << product.name << " type: " << product.type << " price: " << product.price;
     return os;
 }
 
